@@ -433,7 +433,8 @@ func (x *LoginResponse) GetToken() string {
 
 type CreatePVZRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	City          string                 `protobuf:"bytes,1,opt,name=city,proto3" json:"city,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	City          string                 `protobuf:"bytes,2,opt,name=city,proto3" json:"city,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -466,6 +467,13 @@ func (x *CreatePVZRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreatePVZRequest.ProtoReflect.Descriptor instead.
 func (*CreatePVZRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CreatePVZRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
 }
 
 func (x *CreatePVZRequest) GetCity() string {
@@ -521,7 +529,8 @@ func (x *CreatePVZResponse) GetIdPVZ() string {
 
 type OpenReceptionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IdPVZ         string                 `protobuf:"bytes,1,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	IdPVZ         string                 `protobuf:"bytes,2,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -556,6 +565,13 @@ func (*OpenReceptionRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{8}
 }
 
+func (x *OpenReceptionRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 func (x *OpenReceptionRequest) GetIdPVZ() string {
 	if x != nil {
 		return x.IdPVZ
@@ -565,8 +581,9 @@ func (x *OpenReceptionRequest) GetIdPVZ() string {
 
 type AddItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IdPVZ         string                 `protobuf:"bytes,1,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
-	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	IdPVZ         string                 `protobuf:"bytes,2,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
+	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -599,6 +616,13 @@ func (x *AddItemRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use AddItemRequest.ProtoReflect.Descriptor instead.
 func (*AddItemRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *AddItemRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
 }
 
 func (x *AddItemRequest) GetIdPVZ() string {
@@ -661,7 +685,8 @@ func (x *AddItemResponse) GetIdItem() string {
 
 type RemoveItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IdItem        string                 `protobuf:"bytes,1,opt,name=idItem,proto3" json:"idItem,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	IdItem        string                 `protobuf:"bytes,2,opt,name=idItem,proto3" json:"idItem,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -696,6 +721,13 @@ func (*RemoveItemRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{11}
 }
 
+func (x *RemoveItemRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 func (x *RemoveItemRequest) GetIdItem() string {
 	if x != nil {
 		return x.IdItem
@@ -705,7 +737,8 @@ func (x *RemoveItemRequest) GetIdItem() string {
 
 type CloseReceptionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IdPVZ         string                 `protobuf:"bytes,1,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	IdPVZ         string                 `protobuf:"bytes,2,opt,name=idPVZ,proto3" json:"idPVZ,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -740,6 +773,13 @@ func (*CloseReceptionRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{12}
 }
 
+func (x *CloseReceptionRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 func (x *CloseReceptionRequest) GetIdPVZ() string {
 	if x != nil {
 		return x.IdPVZ
@@ -749,8 +789,9 @@ func (x *CloseReceptionRequest) GetIdPVZ() string {
 
 type GetPVZDataRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Start         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=start,proto3" json:"start,omitempty"`
-	Finish        *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=finish,proto3" json:"finish,omitempty"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Start         *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start,proto3" json:"start,omitempty"`
+	Finish        *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=finish,proto3" json:"finish,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -783,6 +824,13 @@ func (x *GetPVZDataRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetPVZDataRequest.ProtoReflect.Descriptor instead.
 func (*GetPVZDataRequest) Descriptor() ([]byte, []int) {
 	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetPVZDataRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
 }
 
 func (x *GetPVZDataRequest) GetStart() *timestamppb.Timestamp {
@@ -866,35 +914,41 @@ const file_pvz_service_pvz_service_proto_rawDesc = "" +
 	"\x06idItem\x18\x01 \x01(\tR\x06idItem\x12@\n" +
 	"\rreceptionTime\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\rreceptionTime\x12K\n" +
 	"\x04type\x18\x03 \x01(\tB7\xfaB4r2R\x16электроникаR\fодеждаR\n" +
-	"обувьR\x04type\"b\n" +
+	"обувьR\x04type\"\x98\x01\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12%\n" +
-	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\b\x18 R\bpassword\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\"K\n" +
+	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\b\x18 R\bpassword\x12H\n" +
+	"\x04role\x18\x03 \x01(\tB4\xfaB1r/R\x12модераторR\x19сотрудник ПВЗR\x04role\"K\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12%\n" +
 	"\bpassword\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\b\x18 R\bpassword\"%\n" +
 	"\rLoginResponse\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"h\n" +
-	"\x10CreatePVZRequest\x12T\n" +
-	"\x04city\x18\x01 \x01(\tB@\xfaB=r;R\fМоскваR\x1dСанкт-ПетербургR\fКазаньR\x04city\")\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"~\n" +
+	"\x10CreatePVZRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12T\n" +
+	"\x04city\x18\x02 \x01(\tB@\xfaB=r;R\fМоскваR\x1dСанкт-ПетербургR\fКазаньR\x04city\")\n" +
 	"\x11CreatePVZResponse\x12\x14\n" +
-	"\x05idPVZ\x18\x01 \x01(\tR\x05idPVZ\",\n" +
+	"\x05idPVZ\x18\x01 \x01(\tR\x05idPVZ\"B\n" +
 	"\x14OpenReceptionRequest\x12\x14\n" +
-	"\x05idPVZ\x18\x01 \x01(\tR\x05idPVZ\"s\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x14\n" +
+	"\x05idPVZ\x18\x02 \x01(\tR\x05idPVZ\"\x89\x01\n" +
 	"\x0eAddItemRequest\x12\x14\n" +
-	"\x05idPVZ\x18\x01 \x01(\tR\x05idPVZ\x12K\n" +
-	"\x04type\x18\x02 \x01(\tB7\xfaB4r2R\x16электроникаR\fодеждаR\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x14\n" +
+	"\x05idPVZ\x18\x02 \x01(\tR\x05idPVZ\x12K\n" +
+	"\x04type\x18\x03 \x01(\tB7\xfaB4r2R\x16электроникаR\fодеждаR\n" +
 	"обувьR\x04type\")\n" +
 	"\x0fAddItemResponse\x12\x16\n" +
-	"\x06idItem\x18\x01 \x01(\tR\x06idItem\"+\n" +
-	"\x11RemoveItemRequest\x12\x16\n" +
-	"\x06idItem\x18\x01 \x01(\tR\x06idItem\"-\n" +
+	"\x06idItem\x18\x01 \x01(\tR\x06idItem\"A\n" +
+	"\x11RemoveItemRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x16\n" +
+	"\x06idItem\x18\x02 \x01(\tR\x06idItem\"C\n" +
 	"\x15CloseReceptionRequest\x12\x14\n" +
-	"\x05idPVZ\x18\x01 \x01(\tR\x05idPVZ\"y\n" +
-	"\x11GetPVZDataRequest\x120\n" +
-	"\x05start\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x122\n" +
-	"\x06finish\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x06finish\":\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x14\n" +
+	"\x05idPVZ\x18\x02 \x01(\tR\x05idPVZ\"\x8f\x01\n" +
+	"\x11GetPVZDataRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x120\n" +
+	"\x05start\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x122\n" +
+	"\x06finish\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x06finish\":\n" +
 	"\x12GetPVZDataResponse\x12$\n" +
 	"\x04pvzs\x18\x01 \x03(\v2\x10.pvz_service.PVZR\x04pvzs2\xc9\x04\n" +
 	"\n" +

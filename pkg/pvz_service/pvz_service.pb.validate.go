@@ -559,7 +559,16 @@ func (m *RegisterRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	// no validation rules for Role
+	if _, ok := _RegisterRequest_Role_InLookup[m.GetRole()]; !ok {
+		err := RegisterRequestValidationError{
+			field:  "Role",
+			reason: "value must be in list [модератор сотрудник ПВЗ]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return RegisterRequestMultiError(errors)
@@ -638,6 +647,11 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RegisterRequestValidationError{}
+
+var _RegisterRequest_Role_InLookup = map[string]struct{}{
+	"модератор":     {},
+	"сотрудник ПВЗ": {},
+}
 
 // Validate checks the field values on LoginRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
@@ -875,6 +889,8 @@ func (m *CreatePVZRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Token
+
 	if _, ok := _CreatePVZRequest_City_InLookup[m.GetCity()]; !ok {
 		err := CreatePVZRequestValidationError{
 			field:  "City",
@@ -1096,6 +1112,8 @@ func (m *OpenReceptionRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Token
+
 	// no validation rules for IdPVZ
 
 	if len(errors) > 0 {
@@ -1199,6 +1217,8 @@ func (m *AddItemRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Token
 
 	// no validation rules for IdPVZ
 
@@ -1421,6 +1441,8 @@ func (m *RemoveItemRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Token
+
 	// no validation rules for IdItem
 
 	if len(errors) > 0 {
@@ -1525,6 +1547,8 @@ func (m *CloseReceptionRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Token
+
 	// no validation rules for IdPVZ
 
 	if len(errors) > 0 {
@@ -1628,6 +1652,8 @@ func (m *GetPVZDataRequest) validate(all bool) error {
 	}
 
 	var errors []error
+
+	// no validation rules for Token
 
 	if all {
 		switch v := interface{}(m.GetStart()).(type) {
