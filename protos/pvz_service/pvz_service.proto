@@ -48,7 +48,7 @@ message Item {
 message RegisterRequest {
   string login = 1;
   string password = 2 [(validate.rules).string = {min_len: 8, max_len: 32}];
-  string role = 3;
+  string role = 3 [(validate.rules).string = {in: ["модератор", "сотрудник ПВЗ"]}];
 }
 
 message LoginRequest {
@@ -60,35 +60,41 @@ message LoginResponse {
 }
 
 message CreatePVZRequest {
-  string city = 1 [(validate.rules).string = {in: ["Москва", "Санкт-Петербург", "Казань"]}];
+  string token = 1;
+  string city = 2 [(validate.rules).string = {in: ["Москва", "Санкт-Петербург", "Казань"]}];
 }
 message CreatePVZResponse {
   string idPVZ = 1;
 }
 
 message OpenReceptionRequest {
-  string idPVZ = 1;
+  string token = 1;
+  string idPVZ = 2;
 }
 
 message AddItemRequest {
-  string idPVZ = 1;
-  string type = 2 [(validate.rules).string = {in: ["электроника", "одежда", "обувь"]}];
+  string token = 1;
+  string idPVZ = 2;
+  string type = 3 [(validate.rules).string = {in: ["электроника", "одежда", "обувь"]}];
 }
 message AddItemResponse {
   string idItem = 1;
 }
 
 message RemoveItemRequest {
-  string idItem = 1;
+  string token = 1;
+  string idItem = 2;
 }
 
 message CloseReceptionRequest {
-  string idPVZ = 1;
+  string token = 1;
+  string idPVZ = 2;
 }
 
 message GetPVZDataRequest {
-  google.protobuf.Timestamp start = 1;
-  google.protobuf.Timestamp finish = 2;
+  string token = 1;
+  google.protobuf.Timestamp start = 2;
+  google.protobuf.Timestamp finish = 3;
 }
 message GetPVZDataResponse {
   repeated PVZ pvzs = 1;
