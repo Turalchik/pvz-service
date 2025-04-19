@@ -19,10 +19,9 @@ func (repo *Repo) CheckUserExisting(ctx context.Context, login string) (bool, er
 		return false, status.Error(codes.Internal, "Internal error")
 	}
 
-	row := repo.db.QueryRowContext(ctx, query, args...)
-
 	var userExists bool
-	err = row.Scan(&userExists)
+	err = repo.db.GetContext(ctx, &userExists, query, args...)
+
 	if err != nil {
 		return false, status.Error(codes.Internal, "Internal error")
 	}

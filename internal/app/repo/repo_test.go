@@ -13,15 +13,24 @@ import (
 	"testing"
 )
 
+func setupDataBase(t *testing.T) (*Repo, sqlmock.Sqlmock, func(), error) {
+	sqlDB, mock, err := sqlmock.New()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	db := sqlx.NewDb(sqlDB, "sqlmock")
+	repo := NewRepo(db)
+
+	return repo, mock, func() { db.Close() }, nil
+}
+
 func TestRepo_CreateUser_Success(t *testing.T) {
-	rawDB, mock, err := sqlmock.New()
+	repo, mock, closer, err := setupDataBase(t)
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %s", err)
 	}
-	defer rawDB.Close()
-
-	db := sqlx.NewDb(rawDB, "sqlmock")
-	repo := NewRepo(db)
+	defer closer()
 
 	ctx := context.Background()
 	u := &users.User{
@@ -49,14 +58,11 @@ func TestRepo_CreateUser_Success(t *testing.T) {
 }
 
 func TestRepo_CreateUser_DBError(t *testing.T) {
-	rawDB, mock, err := sqlmock.New()
+	repo, mock, closer, err := setupDataBase(t)
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %s", err)
 	}
-	defer rawDB.Close()
-
-	db := sqlx.NewDb(rawDB, "sqlmock")
-	repo := NewRepo(db)
+	defer closer()
 
 	ctx := context.Background()
 	u := &users.User{ID: "999", Login: "bob", Password: "pwd", Role: "admin"}
@@ -89,14 +95,11 @@ func TestRepo_CreateUser_DBError(t *testing.T) {
 const existExpectQuery = `SELECT EXISTS ( SELECT 1 FROM users WHERE login = $1 ) AS user_exists`
 
 func TestCheckUserExisting_WhenExists(t *testing.T) {
-	rawDB, mock, err := sqlmock.New()
+	repo, mock, closer, err := setupDataBase(t)
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %s", err)
 	}
-	defer rawDB.Close()
-
-	db := sqlx.NewDb(rawDB, "sqlmock")
-	repo := NewRepo(db)
+	defer closer()
 
 	ctx := context.Background()
 	login := "alice"
@@ -123,14 +126,11 @@ func TestCheckUserExisting_WhenExists(t *testing.T) {
 }
 
 func TestCheckUserExisting_WhenNotExists(t *testing.T) {
-	rawDB, mock, err := sqlmock.New()
+	repo, mock, closer, err := setupDataBase(t)
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %s", err)
 	}
-	defer rawDB.Close()
-
-	db := sqlx.NewDb(rawDB, "sqlmock")
-	repo := NewRepo(db)
+	defer closer()
 
 	ctx := context.Background()
 	login := "bob"
@@ -156,14 +156,11 @@ func TestCheckUserExisting_WhenNotExists(t *testing.T) {
 }
 
 func TestCheckUserExisting_WhenDBError(t *testing.T) {
-	rawDB, mock, err := sqlmock.New()
+	repo, mock, closer, err := setupDataBase(t)
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %s", err)
 	}
-	defer rawDB.Close()
-
-	db := sqlx.NewDb(rawDB, "sqlmock")
-	repo := NewRepo(db)
+	defer closer()
 
 	ctx := context.Background()
 	login := "charlie"
@@ -186,6 +183,117 @@ func TestCheckUserExisting_WhenDBError(t *testing.T) {
 	}
 	if st.Message() != "Internal error" {
 		t.Errorf("expected message %q, got %q", "Internal error", st.Message())
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("unmet expectations: %v", err)
+	}
+}
+
+var getUserExpectQuery = `SELECT * FROM users WHERE login = $1`
+
+func TestGetUserByLogin_Success(t *testing.T) {
+	repo, mock, closer, err := setupDataBase(t)
+	if err != nil {
+		t.Fatalf("failed to open sqlmock database: %s", err)
+	}
+	defer closer()
+
+	ctx := context.Background()
+	login := "alice"
+
+	rows := sqlmock.
+		NewRows([]string{"id", "login", "password", "role"}).
+		AddRow("someUUID", "someLogin", "somePassword", "someRole")
+
+	mock.
+		ExpectQuery(regexp.QuoteMeta(getUserExpectQuery)).
+		WithArgs(login).
+		WillReturnRows(rows)
+
+	user, err := repo.GetUserByLogin(ctx, login)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if user == nil {
+		t.Fatal("expected non-nil user")
+	}
+	if user.ID != "someUUID" {
+		t.Errorf("ID = %q; want %q", user.ID, "123")
+	}
+	if user.Login != "someLogin" {
+		t.Errorf("Login = %q; want %q", user.Login, "alice")
+	}
+	if user.Password != "somePassword" {
+		t.Errorf("Password = %q; want %q", user.Password, "secret")
+	}
+	if user.Role != "someRole" {
+		t.Errorf("Role = %q; want %q", user.Role, "user")
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("unmet expectations: %v", err)
+	}
+}
+
+func TestGetUserByLogin_NotFound(t *testing.T) {
+	repo, mock, closer, err := setupDataBase(t)
+	if err != nil {
+		t.Fatalf("failed to open sqlmock database: %s", err)
+	}
+	defer closer()
+
+	ctx := context.Background()
+	login := "notExistingLogin"
+
+	rows := sqlmock.NewRows([]string{"id", "login", "password", "role"})
+
+	mock.
+		ExpectQuery(regexp.QuoteMeta(getUserExpectQuery)).
+		WithArgs(login).
+		WillReturnRows(rows) // пустой результат
+
+	user, err := repo.GetUserByLogin(ctx, login)
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if user != nil {
+		t.Errorf("expected nil user, got %+v", user)
+	}
+	st, _ := status.FromError(err)
+	if st.Code() != codes.NotFound {
+		t.Errorf("expected NotFound error, got: %v", st.Code())
+	}
+}
+
+func TestGetUserByLogin_DBError(t *testing.T) {
+	repo, mock, closer, err := setupDataBase(t)
+	if err != nil {
+		t.Fatalf("failed to open sqlmock database: %s", err)
+	}
+	defer closer()
+
+	ctx := context.Background()
+	login := "someLogin"
+
+	mock.
+		ExpectQuery(regexp.QuoteMeta(getUserExpectQuery)).
+		WithArgs(login).
+		WillReturnError(fmt.Errorf("db timeout"))
+
+	user, err := repo.GetUserByLogin(ctx, login)
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+	if user != nil {
+		t.Errorf("expected nil user on error, got %+v", user)
+	}
+	st, _ := status.FromError(err)
+	if st.Code() != codes.Internal {
+		t.Errorf("code = %v; want %v", st.Code(), codes.Internal)
+	}
+	if st.Message() != "Cannot take user by login" {
+		t.Errorf("message = %q; want %q", st.Message(), "Cannot take user by login")
 	}
 
 	if err := mock.ExpectationsWereMet(); err != nil {
