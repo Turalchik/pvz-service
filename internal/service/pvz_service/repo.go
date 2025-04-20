@@ -8,4 +8,5 @@ import (
 type RepoInterface interface {
 	CheckUserExisting(ctx context.Context, login string) (bool, error)
 	CreateUser(ctx context.Context, user *users.User) error
+	GetUserByLogin(ctx context.Context, login string) (*users.User, error)
 }

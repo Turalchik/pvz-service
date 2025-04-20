@@ -11,15 +11,17 @@ import (
 type PVZServiceAPI struct {
 	desc.UnimplementedPVZServiceServer
 	repo            RepoInterface
-	secretKeyForJWT string
+	uuidInterface   UUIDInterface
+	secretKeyForJWT []byte
 }
 
-func NewPVZServiceServer(repo RepoInterface) (desc.PVZServiceServer, error) {
+func NewPVZServiceServer(repo RepoInterface, uuidInterface UUIDInterface) (desc.PVZServiceServer, error) {
 	if err := godotenv.Load(); err != nil {
 		return nil, status.Error(codes.Internal, "Cannot load env vars")
 	}
 	return &PVZServiceAPI{
 		repo:            repo,
-		secretKeyForJWT: os.Getenv("JWT_SECRET_KEY"),
+		uuidInterface:   uuidInterface,
+		secretKeyForJWT: []byte(os.Getenv("JWT_SECRET_KEY")),
 	}, nil
 }

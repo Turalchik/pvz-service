@@ -3,8 +3,11 @@ module github.com/Turalchik/pvz-service
 go 1.24.2
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/Turalchik/pvz-service/pkg/pvz_service v0.0.0-00010101000000-000000000000
+	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.4.0
@@ -14,7 +17,6 @@ require (
 )
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.2 // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.2.1 // indirect
 	github.com/gofrs/uuid v4.4.0+incompatible // indirect
