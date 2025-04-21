@@ -39,13 +39,13 @@ func (PVZService *PVZServiceAPI) CloseReception(ctx context.Context, req *desc.C
 		return nil, status.Error(codes.InvalidArgument, "PVZ doesn't have active reception")
 	}
 
-	if err = PVZService.repo.UpdateActiveReceptionPVZ(ctx, req.GetId(), sql.NullString{}); err != nil {
-		return nil, status.Error(codes.Internal, "Can't update active reception for PVZ")
-	}
-
 	reception, err := PVZService.repo.GetReceptionByPVZID(ctx, req.GetId())
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Can't get reception")
+	}
+
+	if err = PVZService.repo.UpdateActiveReceptionPVZ(ctx, req.GetId(), sql.NullString{}); err != nil {
+		return nil, status.Error(codes.Internal, "Can't update active reception for PVZ")
 	}
 
 	if err = PVZService.repo.CloseReception(ctx, reception.ID, sql.NullTime{Time: PVZService.timerInterface.Now(), Valid: true}); err != nil {

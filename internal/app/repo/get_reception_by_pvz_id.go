@@ -14,7 +14,7 @@ func (repo *Repo) GetReceptionByPVZID(ctx context.Context, pvzID string) (*recep
 	sb := psql.Select("receptions.*").
 		From("receptions").
 		Join("pvzs ON receptions.id = pvzs.active_reception").
-		Where(sq.Eq{"pvz.id": pvzID})
+		Where(sq.Eq{"pvzs.id": pvzID})
 
 	query, args, err := sb.ToSql()
 	if err != nil {
