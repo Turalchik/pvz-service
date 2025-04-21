@@ -13,15 +13,15 @@ service PVZService {
   rpc Register(RegisterRequest) returns (google.protobuf.Empty);
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc CreatePVZ(CreatePVZRequest) returns (CreatePVZResponse);
-  rpc OpenReception(OpenReceptionRequest) returns (google.protobuf.Empty);
-  rpc AddItem(AddItemRequest) returns (google.protobuf.Empty);
-  rpc RemoveItem(RemoveItemRequest) returns (google.protobuf.Empty);
+  rpc OpenReception(OpenReceptionRequest) returns (OpenReceptionResponse);
+  rpc AddProduct(AddProductRequest) returns (AddProductResponse);
+  rpc RemoveProduct(RemoveProductRequest) returns (google.protobuf.Empty);
   rpc CloseReception(CloseReceptionRequest) returns (google.protobuf.Empty);
-  rpc GetPVZData(GetPVZDataRequest) returns (GetPVZDataResponse);
+  rpc GetFilteredPVZs(GetFilteredPVZsRequest) returns (GetFilteredPVZsResponse);
 }
 
 message PVZ {
-  string idPVZ = 1;
+  string id = 1;
   google.protobuf.Timestamp registration_date = 2;
   string city = 3 [(validate.rules).string = {in: ["Москва", "Санкт-Петербург", "Казань"]}];
 }
@@ -31,16 +31,16 @@ message Reception {
     RECEPTION_STATUS_IN_PROGRESS = 0;
     RECEPTION_STATUS_CLOSED = 1;
   }
-  string idReception = 1;
+  string id = 1;
   google.protobuf.Timestamp openingTime = 2;
   google.protobuf.Timestamp closingTime = 3;
-  string idPVZ = 4;
-  repeated Item items = 5;
+  string pvz_id = 4;
+  repeated Product products = 5;
   ReceptionStatus status = 6;
 }
 
-message Item {
-  string idItem = 1;
+message Product {
+  string id = 1;
   google.protobuf.Timestamp receptionTime = 2;
   string type = 3 [(validate.rules).string = {in: ["электроника", "одежда", "обувь"]}];
 }
@@ -64,38 +64,43 @@ message CreatePVZRequest {
   string city = 2 [(validate.rules).string = {in: ["Москва", "Санкт-Петербург", "Казань"]}];
 }
 message CreatePVZResponse {
-  string idPVZ = 1;
+  string id = 1;
 }
 
 message OpenReceptionRequest {
   string token = 1;
-  string idPVZ = 2;
+  string id = 2;
+}
+message OpenReceptionResponse {
+  string idReception = 1;
 }
 
-message AddItemRequest {
+message AddProductRequest {
   string token = 1;
-  string idPVZ = 2;
+  string id = 2;
   string type = 3 [(validate.rules).string = {in: ["электроника", "одежда", "обувь"]}];
 }
-message AddItemResponse {
-  string idItem = 1;
+message AddProductResponse {
+  string idProduct = 1;
 }
 
-message RemoveItemRequest {
+message RemoveProductRequest {
   string token = 1;
-  string idItem = 2;
+  string id = 2;
 }
 
 message CloseReceptionRequest {
   string token = 1;
-  string idPVZ = 2;
+  string id = 2;
 }
 
-message GetPVZDataRequest {
+message GetFilteredPVZsRequest {
   string token = 1;
-  google.protobuf.Timestamp start = 2;
-  google.protobuf.Timestamp finish = 3;
+  google.protobuf.Timestamp start = 2 [(validate.rules).timestamp.required = true];
+  google.protobuf.Timestamp finish = 3 [(validate.rules).timestamp.required = true];
+  uint64 limit = 4;
+  uint64 offset = 5;
 }
-message GetPVZDataResponse {
+message GetFilteredPVZsResponse {
   repeated PVZ pvzs = 1;
 }

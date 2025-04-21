@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	_ "github.com/jackc/pgx"
 	"github.com/jmoiron/sqlx"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

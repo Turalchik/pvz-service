@@ -56,7 +56,7 @@ func (m *PVZ) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for IdPVZ
+	// no validation rules for Id
 
 	if all {
 		switch v := interface{}(m.GetRegistrationDate()).(type) {
@@ -203,7 +203,7 @@ func (m *Reception) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for IdReception
+	// no validation rules for Id
 
 	if all {
 		switch v := interface{}(m.GetOpeningTime()).(type) {
@@ -263,9 +263,9 @@ func (m *Reception) validate(all bool) error {
 		}
 	}
 
-	// no validation rules for IdPVZ
+	// no validation rules for PvzId
 
-	for idx, item := range m.GetItems() {
+	for idx, item := range m.GetProducts() {
 		_, _ = idx, item
 
 		if all {
@@ -273,7 +273,7 @@ func (m *Reception) validate(all bool) error {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
 					errors = append(errors, ReceptionValidationError{
-						field:  fmt.Sprintf("Items[%v]", idx),
+						field:  fmt.Sprintf("Products[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -281,7 +281,7 @@ func (m *Reception) validate(all bool) error {
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
 					errors = append(errors, ReceptionValidationError{
-						field:  fmt.Sprintf("Items[%v]", idx),
+						field:  fmt.Sprintf("Products[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
 					})
@@ -290,7 +290,7 @@ func (m *Reception) validate(all bool) error {
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				return ReceptionValidationError{
-					field:  fmt.Sprintf("Items[%v]", idx),
+					field:  fmt.Sprintf("Products[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
 				}
@@ -378,34 +378,34 @@ var _ interface {
 	ErrorName() string
 } = ReceptionValidationError{}
 
-// Validate checks the field values on Item with the rules defined in the proto
-// definition for this message. If any rules are violated, the first error
-// encountered is returned, or nil if there are no violations.
-func (m *Item) Validate() error {
+// Validate checks the field values on Product with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Product) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Item with the rules defined in the
+// ValidateAll checks the field values on Product with the rules defined in the
 // proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in ItemMultiError, or nil if none found.
-func (m *Item) ValidateAll() error {
+// a list of violation errors wrapped in ProductMultiError, or nil if none found.
+func (m *Product) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Item) validate(all bool) error {
+func (m *Product) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for IdItem
+	// no validation rules for Id
 
 	if all {
 		switch v := interface{}(m.GetReceptionTime()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ItemValidationError{
+				errors = append(errors, ProductValidationError{
 					field:  "ReceptionTime",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -413,7 +413,7 @@ func (m *Item) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ItemValidationError{
+				errors = append(errors, ProductValidationError{
 					field:  "ReceptionTime",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -422,7 +422,7 @@ func (m *Item) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetReceptionTime()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ItemValidationError{
+			return ProductValidationError{
 				field:  "ReceptionTime",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -430,8 +430,8 @@ func (m *Item) validate(all bool) error {
 		}
 	}
 
-	if _, ok := _Item_Type_InLookup[m.GetType()]; !ok {
-		err := ItemValidationError{
+	if _, ok := _Product_Type_InLookup[m.GetType()]; !ok {
+		err := ProductValidationError{
 			field:  "Type",
 			reason: "value must be in list [электроника одежда обувь]",
 		}
@@ -442,18 +442,18 @@ func (m *Item) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ItemMultiError(errors)
+		return ProductMultiError(errors)
 	}
 
 	return nil
 }
 
-// ItemMultiError is an error wrapping multiple validation errors returned by
-// Item.ValidateAll() if the designated constraints aren't met.
-type ItemMultiError []error
+// ProductMultiError is an error wrapping multiple validation errors returned
+// by Product.ValidateAll() if the designated constraints aren't met.
+type ProductMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ItemMultiError) Error() string {
+func (m ProductMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -462,11 +462,11 @@ func (m ItemMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ItemMultiError) AllErrors() []error { return m }
+func (m ProductMultiError) AllErrors() []error { return m }
 
-// ItemValidationError is the validation error returned by Item.Validate if the
-// designated constraints aren't met.
-type ItemValidationError struct {
+// ProductValidationError is the validation error returned by Product.Validate
+// if the designated constraints aren't met.
+type ProductValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -474,22 +474,22 @@ type ItemValidationError struct {
 }
 
 // Field function returns field value.
-func (e ItemValidationError) Field() string { return e.field }
+func (e ProductValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ItemValidationError) Reason() string { return e.reason }
+func (e ProductValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ItemValidationError) Cause() error { return e.cause }
+func (e ProductValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ItemValidationError) Key() bool { return e.key }
+func (e ProductValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ItemValidationError) ErrorName() string { return "ItemValidationError" }
+func (e ProductValidationError) ErrorName() string { return "ProductValidationError" }
 
 // Error satisfies the builtin error interface
-func (e ItemValidationError) Error() string {
+func (e ProductValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -501,14 +501,14 @@ func (e ItemValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sItem.%s: %s%s",
+		"invalid %sProduct.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ItemValidationError{}
+var _ error = ProductValidationError{}
 
 var _ interface {
 	Field() string
@@ -516,9 +516,9 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ItemValidationError{}
+} = ProductValidationError{}
 
-var _Item_Type_InLookup = map[string]struct{}{
+var _Product_Type_InLookup = map[string]struct{}{
 	"электроника": {},
 	"одежда":      {},
 	"обувь":       {},
@@ -1008,7 +1008,7 @@ func (m *CreatePVZResponse) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for IdPVZ
+	// no validation rules for Id
 
 	if len(errors) > 0 {
 		return CreatePVZResponseMultiError(errors)
@@ -1114,7 +1114,7 @@ func (m *OpenReceptionRequest) validate(all bool) error {
 
 	// no validation rules for Token
 
-	// no validation rules for IdPVZ
+	// no validation rules for Id
 
 	if len(errors) > 0 {
 		return OpenReceptionRequestMultiError(errors)
@@ -1196,22 +1196,126 @@ var _ interface {
 	ErrorName() string
 } = OpenReceptionRequestValidationError{}
 
-// Validate checks the field values on AddItemRequest with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *AddItemRequest) Validate() error {
+// Validate checks the field values on OpenReceptionResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *OpenReceptionResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on AddItemRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in AddItemRequestMultiError,
-// or nil if none found.
-func (m *AddItemRequest) ValidateAll() error {
+// ValidateAll checks the field values on OpenReceptionResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// OpenReceptionResponseMultiError, or nil if none found.
+func (m *OpenReceptionResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *AddItemRequest) validate(all bool) error {
+func (m *OpenReceptionResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for IdReception
+
+	if len(errors) > 0 {
+		return OpenReceptionResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// OpenReceptionResponseMultiError is an error wrapping multiple validation
+// errors returned by OpenReceptionResponse.ValidateAll() if the designated
+// constraints aren't met.
+type OpenReceptionResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m OpenReceptionResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m OpenReceptionResponseMultiError) AllErrors() []error { return m }
+
+// OpenReceptionResponseValidationError is the validation error returned by
+// OpenReceptionResponse.Validate if the designated constraints aren't met.
+type OpenReceptionResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e OpenReceptionResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e OpenReceptionResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e OpenReceptionResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e OpenReceptionResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e OpenReceptionResponseValidationError) ErrorName() string {
+	return "OpenReceptionResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e OpenReceptionResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sOpenReceptionResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = OpenReceptionResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = OpenReceptionResponseValidationError{}
+
+// Validate checks the field values on AddProductRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AddProductRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddProductRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AddProductRequestMultiError, or nil if none found.
+func (m *AddProductRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddProductRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1220,10 +1324,10 @@ func (m *AddItemRequest) validate(all bool) error {
 
 	// no validation rules for Token
 
-	// no validation rules for IdPVZ
+	// no validation rules for Id
 
-	if _, ok := _AddItemRequest_Type_InLookup[m.GetType()]; !ok {
-		err := AddItemRequestValidationError{
+	if _, ok := _AddProductRequest_Type_InLookup[m.GetType()]; !ok {
+		err := AddProductRequestValidationError{
 			field:  "Type",
 			reason: "value must be in list [электроника одежда обувь]",
 		}
@@ -1234,19 +1338,19 @@ func (m *AddItemRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return AddItemRequestMultiError(errors)
+		return AddProductRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// AddItemRequestMultiError is an error wrapping multiple validation errors
-// returned by AddItemRequest.ValidateAll() if the designated constraints
+// AddProductRequestMultiError is an error wrapping multiple validation errors
+// returned by AddProductRequest.ValidateAll() if the designated constraints
 // aren't met.
-type AddItemRequestMultiError []error
+type AddProductRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m AddItemRequestMultiError) Error() string {
+func (m AddProductRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1255,11 +1359,11 @@ func (m AddItemRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m AddItemRequestMultiError) AllErrors() []error { return m }
+func (m AddProductRequestMultiError) AllErrors() []error { return m }
 
-// AddItemRequestValidationError is the validation error returned by
-// AddItemRequest.Validate if the designated constraints aren't met.
-type AddItemRequestValidationError struct {
+// AddProductRequestValidationError is the validation error returned by
+// AddProductRequest.Validate if the designated constraints aren't met.
+type AddProductRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1267,22 +1371,24 @@ type AddItemRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e AddItemRequestValidationError) Field() string { return e.field }
+func (e AddProductRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e AddItemRequestValidationError) Reason() string { return e.reason }
+func (e AddProductRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e AddItemRequestValidationError) Cause() error { return e.cause }
+func (e AddProductRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e AddItemRequestValidationError) Key() bool { return e.key }
+func (e AddProductRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e AddItemRequestValidationError) ErrorName() string { return "AddItemRequestValidationError" }
+func (e AddProductRequestValidationError) ErrorName() string {
+	return "AddProductRequestValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e AddItemRequestValidationError) Error() string {
+func (e AddProductRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1294,14 +1400,14 @@ func (e AddItemRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sAddItemRequest.%s: %s%s",
+		"invalid %sAddProductRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = AddItemRequestValidationError{}
+var _ error = AddProductRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1309,52 +1415,52 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = AddItemRequestValidationError{}
+} = AddProductRequestValidationError{}
 
-var _AddItemRequest_Type_InLookup = map[string]struct{}{
+var _AddProductRequest_Type_InLookup = map[string]struct{}{
 	"электроника": {},
 	"одежда":      {},
 	"обувь":       {},
 }
 
-// Validate checks the field values on AddItemResponse with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *AddItemResponse) Validate() error {
+// Validate checks the field values on AddProductResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AddProductResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on AddItemResponse with the rules
+// ValidateAll checks the field values on AddProductResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// AddItemResponseMultiError, or nil if none found.
-func (m *AddItemResponse) ValidateAll() error {
+// AddProductResponseMultiError, or nil if none found.
+func (m *AddProductResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *AddItemResponse) validate(all bool) error {
+func (m *AddProductResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for IdItem
+	// no validation rules for IdProduct
 
 	if len(errors) > 0 {
-		return AddItemResponseMultiError(errors)
+		return AddProductResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// AddItemResponseMultiError is an error wrapping multiple validation errors
-// returned by AddItemResponse.ValidateAll() if the designated constraints
+// AddProductResponseMultiError is an error wrapping multiple validation errors
+// returned by AddProductResponse.ValidateAll() if the designated constraints
 // aren't met.
-type AddItemResponseMultiError []error
+type AddProductResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m AddItemResponseMultiError) Error() string {
+func (m AddProductResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1363,11 +1469,11 @@ func (m AddItemResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m AddItemResponseMultiError) AllErrors() []error { return m }
+func (m AddProductResponseMultiError) AllErrors() []error { return m }
 
-// AddItemResponseValidationError is the validation error returned by
-// AddItemResponse.Validate if the designated constraints aren't met.
-type AddItemResponseValidationError struct {
+// AddProductResponseValidationError is the validation error returned by
+// AddProductResponse.Validate if the designated constraints aren't met.
+type AddProductResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1375,22 +1481,24 @@ type AddItemResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e AddItemResponseValidationError) Field() string { return e.field }
+func (e AddProductResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e AddItemResponseValidationError) Reason() string { return e.reason }
+func (e AddProductResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e AddItemResponseValidationError) Cause() error { return e.cause }
+func (e AddProductResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e AddItemResponseValidationError) Key() bool { return e.key }
+func (e AddProductResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e AddItemResponseValidationError) ErrorName() string { return "AddItemResponseValidationError" }
+func (e AddProductResponseValidationError) ErrorName() string {
+	return "AddProductResponseValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e AddItemResponseValidationError) Error() string {
+func (e AddProductResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1402,14 +1510,14 @@ func (e AddItemResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sAddItemResponse.%s: %s%s",
+		"invalid %sAddProductResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = AddItemResponseValidationError{}
+var _ error = AddProductResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1417,24 +1525,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = AddItemResponseValidationError{}
+} = AddProductResponseValidationError{}
 
-// Validate checks the field values on RemoveItemRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *RemoveItemRequest) Validate() error {
+// Validate checks the field values on RemoveProductRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *RemoveProductRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on RemoveItemRequest with the rules
+// ValidateAll checks the field values on RemoveProductRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// RemoveItemRequestMultiError, or nil if none found.
-func (m *RemoveItemRequest) ValidateAll() error {
+// RemoveProductRequestMultiError, or nil if none found.
+func (m *RemoveProductRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *RemoveItemRequest) validate(all bool) error {
+func (m *RemoveProductRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1443,22 +1551,22 @@ func (m *RemoveItemRequest) validate(all bool) error {
 
 	// no validation rules for Token
 
-	// no validation rules for IdItem
+	// no validation rules for Id
 
 	if len(errors) > 0 {
-		return RemoveItemRequestMultiError(errors)
+		return RemoveProductRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// RemoveItemRequestMultiError is an error wrapping multiple validation errors
-// returned by RemoveItemRequest.ValidateAll() if the designated constraints
-// aren't met.
-type RemoveItemRequestMultiError []error
+// RemoveProductRequestMultiError is an error wrapping multiple validation
+// errors returned by RemoveProductRequest.ValidateAll() if the designated
+// constraints aren't met.
+type RemoveProductRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m RemoveItemRequestMultiError) Error() string {
+func (m RemoveProductRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1467,11 +1575,11 @@ func (m RemoveItemRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m RemoveItemRequestMultiError) AllErrors() []error { return m }
+func (m RemoveProductRequestMultiError) AllErrors() []error { return m }
 
-// RemoveItemRequestValidationError is the validation error returned by
-// RemoveItemRequest.Validate if the designated constraints aren't met.
-type RemoveItemRequestValidationError struct {
+// RemoveProductRequestValidationError is the validation error returned by
+// RemoveProductRequest.Validate if the designated constraints aren't met.
+type RemoveProductRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1479,24 +1587,24 @@ type RemoveItemRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e RemoveItemRequestValidationError) Field() string { return e.field }
+func (e RemoveProductRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e RemoveItemRequestValidationError) Reason() string { return e.reason }
+func (e RemoveProductRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e RemoveItemRequestValidationError) Cause() error { return e.cause }
+func (e RemoveProductRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e RemoveItemRequestValidationError) Key() bool { return e.key }
+func (e RemoveProductRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e RemoveItemRequestValidationError) ErrorName() string {
-	return "RemoveItemRequestValidationError"
+func (e RemoveProductRequestValidationError) ErrorName() string {
+	return "RemoveProductRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e RemoveItemRequestValidationError) Error() string {
+func (e RemoveProductRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1508,14 +1616,14 @@ func (e RemoveItemRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sRemoveItemRequest.%s: %s%s",
+		"invalid %sRemoveProductRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = RemoveItemRequestValidationError{}
+var _ error = RemoveProductRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1523,7 +1631,7 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = RemoveItemRequestValidationError{}
+} = RemoveProductRequestValidationError{}
 
 // Validate checks the field values on CloseReceptionRequest with the rules
 // defined in the proto definition for this message. If any rules are
@@ -1549,7 +1657,7 @@ func (m *CloseReceptionRequest) validate(all bool) error {
 
 	// no validation rules for Token
 
-	// no validation rules for IdPVZ
+	// no validation rules for Id
 
 	if len(errors) > 0 {
 		return CloseReceptionRequestMultiError(errors)
@@ -1631,22 +1739,22 @@ var _ interface {
 	ErrorName() string
 } = CloseReceptionRequestValidationError{}
 
-// Validate checks the field values on GetPVZDataRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *GetPVZDataRequest) Validate() error {
+// Validate checks the field values on GetFilteredPVZsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetFilteredPVZsRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetPVZDataRequest with the rules
+// ValidateAll checks the field values on GetFilteredPVZsRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetPVZDataRequestMultiError, or nil if none found.
-func (m *GetPVZDataRequest) ValidateAll() error {
+// GetFilteredPVZsRequestMultiError, or nil if none found.
+func (m *GetFilteredPVZsRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetPVZDataRequest) validate(all bool) error {
+func (m *GetFilteredPVZsRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1655,78 +1763,46 @@ func (m *GetPVZDataRequest) validate(all bool) error {
 
 	// no validation rules for Token
 
-	if all {
-		switch v := interface{}(m.GetStart()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetPVZDataRequestValidationError{
-					field:  "Start",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetPVZDataRequestValidationError{
-					field:  "Start",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if m.GetStart() == nil {
+		err := GetFilteredPVZsRequestValidationError{
+			field:  "Start",
+			reason: "value is required",
 		}
-	} else if v, ok := interface{}(m.GetStart()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetPVZDataRequestValidationError{
-				field:  "Start",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
 	}
 
-	if all {
-		switch v := interface{}(m.GetFinish()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetPVZDataRequestValidationError{
-					field:  "Finish",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetPVZDataRequestValidationError{
-					field:  "Finish",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
+	if m.GetFinish() == nil {
+		err := GetFilteredPVZsRequestValidationError{
+			field:  "Finish",
+			reason: "value is required",
 		}
-	} else if v, ok := interface{}(m.GetFinish()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetPVZDataRequestValidationError{
-				field:  "Finish",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
+		if !all {
+			return err
 		}
+		errors = append(errors, err)
 	}
+
+	// no validation rules for Limit
+
+	// no validation rules for Offset
 
 	if len(errors) > 0 {
-		return GetPVZDataRequestMultiError(errors)
+		return GetFilteredPVZsRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetPVZDataRequestMultiError is an error wrapping multiple validation errors
-// returned by GetPVZDataRequest.ValidateAll() if the designated constraints
-// aren't met.
-type GetPVZDataRequestMultiError []error
+// GetFilteredPVZsRequestMultiError is an error wrapping multiple validation
+// errors returned by GetFilteredPVZsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetFilteredPVZsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetPVZDataRequestMultiError) Error() string {
+func (m GetFilteredPVZsRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1735,11 +1811,11 @@ func (m GetPVZDataRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetPVZDataRequestMultiError) AllErrors() []error { return m }
+func (m GetFilteredPVZsRequestMultiError) AllErrors() []error { return m }
 
-// GetPVZDataRequestValidationError is the validation error returned by
-// GetPVZDataRequest.Validate if the designated constraints aren't met.
-type GetPVZDataRequestValidationError struct {
+// GetFilteredPVZsRequestValidationError is the validation error returned by
+// GetFilteredPVZsRequest.Validate if the designated constraints aren't met.
+type GetFilteredPVZsRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1747,24 +1823,24 @@ type GetPVZDataRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetPVZDataRequestValidationError) Field() string { return e.field }
+func (e GetFilteredPVZsRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetPVZDataRequestValidationError) Reason() string { return e.reason }
+func (e GetFilteredPVZsRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetPVZDataRequestValidationError) Cause() error { return e.cause }
+func (e GetFilteredPVZsRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetPVZDataRequestValidationError) Key() bool { return e.key }
+func (e GetFilteredPVZsRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetPVZDataRequestValidationError) ErrorName() string {
-	return "GetPVZDataRequestValidationError"
+func (e GetFilteredPVZsRequestValidationError) ErrorName() string {
+	return "GetFilteredPVZsRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetPVZDataRequestValidationError) Error() string {
+func (e GetFilteredPVZsRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1776,14 +1852,14 @@ func (e GetPVZDataRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetPVZDataRequest.%s: %s%s",
+		"invalid %sGetFilteredPVZsRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetPVZDataRequestValidationError{}
+var _ error = GetFilteredPVZsRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -1791,24 +1867,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetPVZDataRequestValidationError{}
+} = GetFilteredPVZsRequestValidationError{}
 
-// Validate checks the field values on GetPVZDataResponse with the rules
+// Validate checks the field values on GetFilteredPVZsResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *GetPVZDataResponse) Validate() error {
+func (m *GetFilteredPVZsResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on GetPVZDataResponse with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on GetFilteredPVZsResponse with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// GetPVZDataResponseMultiError, or nil if none found.
-func (m *GetPVZDataResponse) ValidateAll() error {
+// GetFilteredPVZsResponseMultiError, or nil if none found.
+func (m *GetFilteredPVZsResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *GetPVZDataResponse) validate(all bool) error {
+func (m *GetFilteredPVZsResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -1822,7 +1898,7 @@ func (m *GetPVZDataResponse) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, GetPVZDataResponseValidationError{
+					errors = append(errors, GetFilteredPVZsResponseValidationError{
 						field:  fmt.Sprintf("Pvzs[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1830,7 +1906,7 @@ func (m *GetPVZDataResponse) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, GetPVZDataResponseValidationError{
+					errors = append(errors, GetFilteredPVZsResponseValidationError{
 						field:  fmt.Sprintf("Pvzs[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -1839,7 +1915,7 @@ func (m *GetPVZDataResponse) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return GetPVZDataResponseValidationError{
+				return GetFilteredPVZsResponseValidationError{
 					field:  fmt.Sprintf("Pvzs[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -1850,19 +1926,19 @@ func (m *GetPVZDataResponse) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return GetPVZDataResponseMultiError(errors)
+		return GetFilteredPVZsResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// GetPVZDataResponseMultiError is an error wrapping multiple validation errors
-// returned by GetPVZDataResponse.ValidateAll() if the designated constraints
-// aren't met.
-type GetPVZDataResponseMultiError []error
+// GetFilteredPVZsResponseMultiError is an error wrapping multiple validation
+// errors returned by GetFilteredPVZsResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetFilteredPVZsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m GetPVZDataResponseMultiError) Error() string {
+func (m GetFilteredPVZsResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -1871,11 +1947,11 @@ func (m GetPVZDataResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m GetPVZDataResponseMultiError) AllErrors() []error { return m }
+func (m GetFilteredPVZsResponseMultiError) AllErrors() []error { return m }
 
-// GetPVZDataResponseValidationError is the validation error returned by
-// GetPVZDataResponse.Validate if the designated constraints aren't met.
-type GetPVZDataResponseValidationError struct {
+// GetFilteredPVZsResponseValidationError is the validation error returned by
+// GetFilteredPVZsResponse.Validate if the designated constraints aren't met.
+type GetFilteredPVZsResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -1883,24 +1959,24 @@ type GetPVZDataResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e GetPVZDataResponseValidationError) Field() string { return e.field }
+func (e GetFilteredPVZsResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e GetPVZDataResponseValidationError) Reason() string { return e.reason }
+func (e GetFilteredPVZsResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e GetPVZDataResponseValidationError) Cause() error { return e.cause }
+func (e GetFilteredPVZsResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e GetPVZDataResponseValidationError) Key() bool { return e.key }
+func (e GetFilteredPVZsResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e GetPVZDataResponseValidationError) ErrorName() string {
-	return "GetPVZDataResponseValidationError"
+func (e GetFilteredPVZsResponseValidationError) ErrorName() string {
+	return "GetFilteredPVZsResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e GetPVZDataResponseValidationError) Error() string {
+func (e GetFilteredPVZsResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -1912,14 +1988,14 @@ func (e GetPVZDataResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sGetPVZDataResponse.%s: %s%s",
+		"invalid %sGetFilteredPVZsResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = GetPVZDataResponseValidationError{}
+var _ error = GetFilteredPVZsResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -1927,4 +2003,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = GetPVZDataResponseValidationError{}
+} = GetFilteredPVZsResponseValidationError{}

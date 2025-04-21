@@ -20,14 +20,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PVZService_Register_FullMethodName       = "/pvz_service.PVZService/Register"
-	PVZService_Login_FullMethodName          = "/pvz_service.PVZService/Login"
-	PVZService_CreatePVZ_FullMethodName      = "/pvz_service.PVZService/CreatePVZ"
-	PVZService_OpenReception_FullMethodName  = "/pvz_service.PVZService/OpenReception"
-	PVZService_AddItem_FullMethodName        = "/pvz_service.PVZService/AddItem"
-	PVZService_RemoveItem_FullMethodName     = "/pvz_service.PVZService/RemoveItem"
-	PVZService_CloseReception_FullMethodName = "/pvz_service.PVZService/CloseReception"
-	PVZService_GetPVZData_FullMethodName     = "/pvz_service.PVZService/GetPVZData"
+	PVZService_Register_FullMethodName        = "/pvz_service.PVZService/Register"
+	PVZService_Login_FullMethodName           = "/pvz_service.PVZService/Login"
+	PVZService_CreatePVZ_FullMethodName       = "/pvz_service.PVZService/CreatePVZ"
+	PVZService_OpenReception_FullMethodName   = "/pvz_service.PVZService/OpenReception"
+	PVZService_AddProduct_FullMethodName      = "/pvz_service.PVZService/AddProduct"
+	PVZService_RemoveProduct_FullMethodName   = "/pvz_service.PVZService/RemoveProduct"
+	PVZService_CloseReception_FullMethodName  = "/pvz_service.PVZService/CloseReception"
+	PVZService_GetFilteredPVZs_FullMethodName = "/pvz_service.PVZService/GetFilteredPVZs"
 )
 
 // PVZServiceClient is the client API for PVZService service.
@@ -37,11 +37,11 @@ type PVZServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	CreatePVZ(ctx context.Context, in *CreatePVZRequest, opts ...grpc.CallOption) (*CreatePVZResponse, error)
-	OpenReception(ctx context.Context, in *OpenReceptionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	RemoveItem(ctx context.Context, in *RemoveItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	OpenReception(ctx context.Context, in *OpenReceptionRequest, opts ...grpc.CallOption) (*OpenReceptionResponse, error)
+	AddProduct(ctx context.Context, in *AddProductRequest, opts ...grpc.CallOption) (*AddProductResponse, error)
+	RemoveProduct(ctx context.Context, in *RemoveProductRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CloseReception(ctx context.Context, in *CloseReceptionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetPVZData(ctx context.Context, in *GetPVZDataRequest, opts ...grpc.CallOption) (*GetPVZDataResponse, error)
+	GetFilteredPVZs(ctx context.Context, in *GetFilteredPVZsRequest, opts ...grpc.CallOption) (*GetFilteredPVZsResponse, error)
 }
 
 type pVZServiceClient struct {
@@ -82,9 +82,9 @@ func (c *pVZServiceClient) CreatePVZ(ctx context.Context, in *CreatePVZRequest, 
 	return out, nil
 }
 
-func (c *pVZServiceClient) OpenReception(ctx context.Context, in *OpenReceptionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *pVZServiceClient) OpenReception(ctx context.Context, in *OpenReceptionRequest, opts ...grpc.CallOption) (*OpenReceptionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
+	out := new(OpenReceptionResponse)
 	err := c.cc.Invoke(ctx, PVZService_OpenReception_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -92,20 +92,20 @@ func (c *pVZServiceClient) OpenReception(ctx context.Context, in *OpenReceptionR
 	return out, nil
 }
 
-func (c *pVZServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *pVZServiceClient) AddProduct(ctx context.Context, in *AddProductRequest, opts ...grpc.CallOption) (*AddProductResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, PVZService_AddItem_FullMethodName, in, out, cOpts...)
+	out := new(AddProductResponse)
+	err := c.cc.Invoke(ctx, PVZService_AddProduct_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *pVZServiceClient) RemoveItem(ctx context.Context, in *RemoveItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *pVZServiceClient) RemoveProduct(ctx context.Context, in *RemoveProductRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, PVZService_RemoveItem_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, PVZService_RemoveProduct_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,10 +122,10 @@ func (c *pVZServiceClient) CloseReception(ctx context.Context, in *CloseReceptio
 	return out, nil
 }
 
-func (c *pVZServiceClient) GetPVZData(ctx context.Context, in *GetPVZDataRequest, opts ...grpc.CallOption) (*GetPVZDataResponse, error) {
+func (c *pVZServiceClient) GetFilteredPVZs(ctx context.Context, in *GetFilteredPVZsRequest, opts ...grpc.CallOption) (*GetFilteredPVZsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetPVZDataResponse)
-	err := c.cc.Invoke(ctx, PVZService_GetPVZData_FullMethodName, in, out, cOpts...)
+	out := new(GetFilteredPVZsResponse)
+	err := c.cc.Invoke(ctx, PVZService_GetFilteredPVZs_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,11 +139,11 @@ type PVZServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*emptypb.Empty, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	CreatePVZ(context.Context, *CreatePVZRequest) (*CreatePVZResponse, error)
-	OpenReception(context.Context, *OpenReceptionRequest) (*emptypb.Empty, error)
-	AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error)
-	RemoveItem(context.Context, *RemoveItemRequest) (*emptypb.Empty, error)
+	OpenReception(context.Context, *OpenReceptionRequest) (*OpenReceptionResponse, error)
+	AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error)
+	RemoveProduct(context.Context, *RemoveProductRequest) (*emptypb.Empty, error)
 	CloseReception(context.Context, *CloseReceptionRequest) (*emptypb.Empty, error)
-	GetPVZData(context.Context, *GetPVZDataRequest) (*GetPVZDataResponse, error)
+	GetFilteredPVZs(context.Context, *GetFilteredPVZsRequest) (*GetFilteredPVZsResponse, error)
 	mustEmbedUnimplementedPVZServiceServer()
 }
 
@@ -163,20 +163,20 @@ func (UnimplementedPVZServiceServer) Login(context.Context, *LoginRequest) (*Log
 func (UnimplementedPVZServiceServer) CreatePVZ(context.Context, *CreatePVZRequest) (*CreatePVZResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePVZ not implemented")
 }
-func (UnimplementedPVZServiceServer) OpenReception(context.Context, *OpenReceptionRequest) (*emptypb.Empty, error) {
+func (UnimplementedPVZServiceServer) OpenReception(context.Context, *OpenReceptionRequest) (*OpenReceptionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OpenReception not implemented")
 }
-func (UnimplementedPVZServiceServer) AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddItem not implemented")
+func (UnimplementedPVZServiceServer) AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddProduct not implemented")
 }
-func (UnimplementedPVZServiceServer) RemoveItem(context.Context, *RemoveItemRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RemoveItem not implemented")
+func (UnimplementedPVZServiceServer) RemoveProduct(context.Context, *RemoveProductRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveProduct not implemented")
 }
 func (UnimplementedPVZServiceServer) CloseReception(context.Context, *CloseReceptionRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseReception not implemented")
 }
-func (UnimplementedPVZServiceServer) GetPVZData(context.Context, *GetPVZDataRequest) (*GetPVZDataResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetPVZData not implemented")
+func (UnimplementedPVZServiceServer) GetFilteredPVZs(context.Context, *GetFilteredPVZsRequest) (*GetFilteredPVZsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFilteredPVZs not implemented")
 }
 func (UnimplementedPVZServiceServer) mustEmbedUnimplementedPVZServiceServer() {}
 func (UnimplementedPVZServiceServer) testEmbeddedByValue()                    {}
@@ -271,38 +271,38 @@ func _PVZService_OpenReception_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PVZService_AddItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddItemRequest)
+func _PVZService_AddProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddProductRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PVZServiceServer).AddItem(ctx, in)
+		return srv.(PVZServiceServer).AddProduct(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PVZService_AddItem_FullMethodName,
+		FullMethod: PVZService_AddProduct_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PVZServiceServer).AddItem(ctx, req.(*AddItemRequest))
+		return srv.(PVZServiceServer).AddProduct(ctx, req.(*AddProductRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PVZService_RemoveItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveItemRequest)
+func _PVZService_RemoveProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveProductRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PVZServiceServer).RemoveItem(ctx, in)
+		return srv.(PVZServiceServer).RemoveProduct(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PVZService_RemoveItem_FullMethodName,
+		FullMethod: PVZService_RemoveProduct_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PVZServiceServer).RemoveItem(ctx, req.(*RemoveItemRequest))
+		return srv.(PVZServiceServer).RemoveProduct(ctx, req.(*RemoveProductRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -325,20 +325,20 @@ func _PVZService_CloseReception_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PVZService_GetPVZData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetPVZDataRequest)
+func _PVZService_GetFilteredPVZs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFilteredPVZsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PVZServiceServer).GetPVZData(ctx, in)
+		return srv.(PVZServiceServer).GetFilteredPVZs(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: PVZService_GetPVZData_FullMethodName,
+		FullMethod: PVZService_GetFilteredPVZs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PVZServiceServer).GetPVZData(ctx, req.(*GetPVZDataRequest))
+		return srv.(PVZServiceServer).GetFilteredPVZs(ctx, req.(*GetFilteredPVZsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -367,20 +367,20 @@ var PVZService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PVZService_OpenReception_Handler,
 		},
 		{
-			MethodName: "AddItem",
-			Handler:    _PVZService_AddItem_Handler,
+			MethodName: "AddProduct",
+			Handler:    _PVZService_AddProduct_Handler,
 		},
 		{
-			MethodName: "RemoveItem",
-			Handler:    _PVZService_RemoveItem_Handler,
+			MethodName: "RemoveProduct",
+			Handler:    _PVZService_RemoveProduct_Handler,
 		},
 		{
 			MethodName: "CloseReception",
 			Handler:    _PVZService_CloseReception_Handler,
 		},
 		{
-			MethodName: "GetPVZData",
-			Handler:    _PVZService_GetPVZData_Handler,
+			MethodName: "GetFilteredPVZs",
+			Handler:    _PVZService_GetFilteredPVZs_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
