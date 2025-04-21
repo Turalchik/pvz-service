@@ -6,8 +6,13 @@ package mocks
 
 import (
 	context "context"
+	sql "database/sql"
 	reflect "reflect"
+	time "time"
 
+	products "github.com/Turalchik/pvz-service/internal/entities/products"
+	pvz "github.com/Turalchik/pvz-service/internal/entities/pvz"
+	receptions "github.com/Turalchik/pvz-service/internal/entities/receptions"
 	users "github.com/Turalchik/pvz-service/internal/entities/users"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -35,6 +40,36 @@ func (m *MockRepoInterface) EXPECT() *MockRepoInterfaceMockRecorder {
 	return m.recorder
 }
 
+// CheckPVZExisting mocks base method.
+func (m *MockRepoInterface) CheckPVZExisting(ctx context.Context, pvzID string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckPVZExisting", ctx, pvzID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckPVZExisting indicates an expected call of CheckPVZExisting.
+func (mr *MockRepoInterfaceMockRecorder) CheckPVZExisting(ctx, pvzID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckPVZExisting", reflect.TypeOf((*MockRepoInterface)(nil).CheckPVZExisting), ctx, pvzID)
+}
+
+// CheckReceptionActive mocks base method.
+func (m *MockRepoInterface) CheckReceptionActive(ctx context.Context, pvzID string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckReceptionActive", ctx, pvzID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckReceptionActive indicates an expected call of CheckReceptionActive.
+func (mr *MockRepoInterfaceMockRecorder) CheckReceptionActive(ctx, pvzID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckReceptionActive", reflect.TypeOf((*MockRepoInterface)(nil).CheckReceptionActive), ctx, pvzID)
+}
+
 // CheckUserExisting mocks base method.
 func (m *MockRepoInterface) CheckUserExisting(ctx context.Context, login string) (bool, error) {
 	m.ctrl.T.Helper()
@@ -48,6 +83,62 @@ func (m *MockRepoInterface) CheckUserExisting(ctx context.Context, login string)
 func (mr *MockRepoInterfaceMockRecorder) CheckUserExisting(ctx, login interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckUserExisting", reflect.TypeOf((*MockRepoInterface)(nil).CheckUserExisting), ctx, login)
+}
+
+// CloseReception mocks base method.
+func (m *MockRepoInterface) CloseReception(ctx context.Context, receptionID string, endTime sql.NullTime) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CloseReception", ctx, receptionID, endTime)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CloseReception indicates an expected call of CloseReception.
+func (mr *MockRepoInterfaceMockRecorder) CloseReception(ctx, receptionID, endTime interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CloseReception", reflect.TypeOf((*MockRepoInterface)(nil).CloseReception), ctx, receptionID, endTime)
+}
+
+// CreatePVZ mocks base method.
+func (m *MockRepoInterface) CreatePVZ(ctx context.Context, pvz *pvz.PVZ) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreatePVZ", ctx, pvz)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreatePVZ indicates an expected call of CreatePVZ.
+func (mr *MockRepoInterfaceMockRecorder) CreatePVZ(ctx, pvz interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreatePVZ", reflect.TypeOf((*MockRepoInterface)(nil).CreatePVZ), ctx, pvz)
+}
+
+// CreateProduct mocks base method.
+func (m *MockRepoInterface) CreateProduct(ctx context.Context, product *products.Product) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateProduct", ctx, product)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateProduct indicates an expected call of CreateProduct.
+func (mr *MockRepoInterfaceMockRecorder) CreateProduct(ctx, product interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProduct", reflect.TypeOf((*MockRepoInterface)(nil).CreateProduct), ctx, product)
+}
+
+// CreateReception mocks base method.
+func (m *MockRepoInterface) CreateReception(ctx context.Context, reception *receptions.Reception) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateReception", ctx, reception)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateReception indicates an expected call of CreateReception.
+func (mr *MockRepoInterfaceMockRecorder) CreateReception(ctx, reception interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReception", reflect.TypeOf((*MockRepoInterface)(nil).CreateReception), ctx, reception)
 }
 
 // CreateUser mocks base method.
@@ -64,6 +155,65 @@ func (mr *MockRepoInterfaceMockRecorder) CreateUser(ctx, user interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockRepoInterface)(nil).CreateUser), ctx, user)
 }
 
+// DeleteProductByID mocks base method.
+func (m *MockRepoInterface) DeleteProductByID(ctx context.Context, productID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteProductByID", ctx, productID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteProductByID indicates an expected call of DeleteProductByID.
+func (mr *MockRepoInterfaceMockRecorder) DeleteProductByID(ctx, productID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteProductByID", reflect.TypeOf((*MockRepoInterface)(nil).DeleteProductByID), ctx, productID)
+}
+
+// GetFilteredPVZs mocks base method.
+func (m *MockRepoInterface) GetFilteredPVZs(ctx context.Context, startDate, endDate time.Time, limit, offset uint64) ([]*pvz.PVZ, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetFilteredPVZs", ctx, startDate, endDate, limit, offset)
+	ret0, _ := ret[0].([]*pvz.PVZ)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFilteredPVZs indicates an expected call of GetFilteredPVZs.
+func (mr *MockRepoInterfaceMockRecorder) GetFilteredPVZs(ctx, startDate, endDate, limit, offset interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFilteredPVZs", reflect.TypeOf((*MockRepoInterface)(nil).GetFilteredPVZs), ctx, startDate, endDate, limit, offset)
+}
+
+// GetProductByID mocks base method.
+func (m *MockRepoInterface) GetProductByID(ctx context.Context, productID string) (*products.Product, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetProductByID", ctx, productID)
+	ret0, _ := ret[0].(*products.Product)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetProductByID indicates an expected call of GetProductByID.
+func (mr *MockRepoInterfaceMockRecorder) GetProductByID(ctx, productID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProductByID", reflect.TypeOf((*MockRepoInterface)(nil).GetProductByID), ctx, productID)
+}
+
+// GetReceptionByPVZID mocks base method.
+func (m *MockRepoInterface) GetReceptionByPVZID(ctx context.Context, pvzID string) (*receptions.Reception, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReceptionByPVZID", ctx, pvzID)
+	ret0, _ := ret[0].(*receptions.Reception)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReceptionByPVZID indicates an expected call of GetReceptionByPVZID.
+func (mr *MockRepoInterfaceMockRecorder) GetReceptionByPVZID(ctx, pvzID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReceptionByPVZID", reflect.TypeOf((*MockRepoInterface)(nil).GetReceptionByPVZID), ctx, pvzID)
+}
+
 // GetUserByLogin mocks base method.
 func (m *MockRepoInterface) GetUserByLogin(ctx context.Context, login string) (*users.User, error) {
 	m.ctrl.T.Helper()
@@ -77,4 +227,32 @@ func (m *MockRepoInterface) GetUserByLogin(ctx context.Context, login string) (*
 func (mr *MockRepoInterfaceMockRecorder) GetUserByLogin(ctx, login interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByLogin", reflect.TypeOf((*MockRepoInterface)(nil).GetUserByLogin), ctx, login)
+}
+
+// UpdateActiveReceptionPVZ mocks base method.
+func (m *MockRepoInterface) UpdateActiveReceptionPVZ(ctx context.Context, pvzID string, receptionID sql.NullString) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateActiveReceptionPVZ", ctx, pvzID, receptionID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateActiveReceptionPVZ indicates an expected call of UpdateActiveReceptionPVZ.
+func (mr *MockRepoInterfaceMockRecorder) UpdateActiveReceptionPVZ(ctx, pvzID, receptionID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateActiveReceptionPVZ", reflect.TypeOf((*MockRepoInterface)(nil).UpdateActiveReceptionPVZ), ctx, pvzID, receptionID)
+}
+
+// UpdateReceptionLastProduct mocks base method.
+func (m *MockRepoInterface) UpdateReceptionLastProduct(ctx context.Context, receptionID string, productID sql.NullString) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateReceptionLastProduct", ctx, receptionID, productID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateReceptionLastProduct indicates an expected call of UpdateReceptionLastProduct.
+func (mr *MockRepoInterfaceMockRecorder) UpdateReceptionLastProduct(ctx, receptionID, productID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateReceptionLastProduct", reflect.TypeOf((*MockRepoInterface)(nil).UpdateReceptionLastProduct), ctx, receptionID, productID)
 }

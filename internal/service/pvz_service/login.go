@@ -21,7 +21,7 @@ func (PVZService *PVZServiceAPI) Login(ctx context.Context, req *desc.LoginReque
 		return nil, status.Error(codes.InvalidArgument, "Wrong password")
 	}
 
-	token, err := generateToken(PVZService.secretKeyForJWT, user.ID, user.Role)
+	token, err := PVZService.tokenizerInterface.GenerateToken(user.ID, user.Role)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Can't generate token")
 	}
