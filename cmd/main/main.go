@@ -11,7 +11,7 @@ import (
 	"github.com/Turalchik/pvz-service/internal/app/tokenizer"
 	"github.com/Turalchik/pvz-service/internal/service/pvz_service"
 	desc "github.com/Turalchik/pvz-service/pkg/pvz_service"
-	_ "github.com/jackc/pgx"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"google.golang.org/grpc"
 )
 
@@ -42,4 +42,9 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 	desc.RegisterPVZServiceServer(grpcServer, svc)
+
+	log.Println("gRPC server listening on :8080")
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve gRPC server: %v", err)
+	}
 }
