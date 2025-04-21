@@ -2004,3 +2004,225 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetFilteredPVZsResponseValidationError{}
+
+// Validate checks the field values on DummyLoginRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *DummyLoginRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DummyLoginRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DummyLoginRequestMultiError, or nil if none found.
+func (m *DummyLoginRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DummyLoginRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if _, ok := _DummyLoginRequest_Role_InLookup[m.GetRole()]; !ok {
+		err := DummyLoginRequestValidationError{
+			field:  "Role",
+			reason: "value must be in list [модератор сотрудник ПВЗ]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		return DummyLoginRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// DummyLoginRequestMultiError is an error wrapping multiple validation errors
+// returned by DummyLoginRequest.ValidateAll() if the designated constraints
+// aren't met.
+type DummyLoginRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DummyLoginRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DummyLoginRequestMultiError) AllErrors() []error { return m }
+
+// DummyLoginRequestValidationError is the validation error returned by
+// DummyLoginRequest.Validate if the designated constraints aren't met.
+type DummyLoginRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DummyLoginRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DummyLoginRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DummyLoginRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DummyLoginRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DummyLoginRequestValidationError) ErrorName() string {
+	return "DummyLoginRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DummyLoginRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDummyLoginRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DummyLoginRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DummyLoginRequestValidationError{}
+
+var _DummyLoginRequest_Role_InLookup = map[string]struct{}{
+	"модератор":     {},
+	"сотрудник ПВЗ": {},
+}
+
+// Validate checks the field values on DummyLoginResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DummyLoginResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DummyLoginResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DummyLoginResponseMultiError, or nil if none found.
+func (m *DummyLoginResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DummyLoginResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Token
+
+	if len(errors) > 0 {
+		return DummyLoginResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// DummyLoginResponseMultiError is an error wrapping multiple validation errors
+// returned by DummyLoginResponse.ValidateAll() if the designated constraints
+// aren't met.
+type DummyLoginResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DummyLoginResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DummyLoginResponseMultiError) AllErrors() []error { return m }
+
+// DummyLoginResponseValidationError is the validation error returned by
+// DummyLoginResponse.Validate if the designated constraints aren't met.
+type DummyLoginResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DummyLoginResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DummyLoginResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DummyLoginResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DummyLoginResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DummyLoginResponseValidationError) ErrorName() string {
+	return "DummyLoginResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DummyLoginResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDummyLoginResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DummyLoginResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DummyLoginResponseValidationError{}

@@ -18,6 +18,7 @@ service PVZService {
   rpc RemoveProduct(RemoveProductRequest) returns (google.protobuf.Empty);
   rpc CloseReception(CloseReceptionRequest) returns (google.protobuf.Empty);
   rpc GetFilteredPVZs(GetFilteredPVZsRequest) returns (GetFilteredPVZsResponse);
+  rpc DummyLogin(DummyLoginRequest) returns (DummyLoginResponse);
 }
 
 message PVZ {
@@ -103,4 +104,12 @@ message GetFilteredPVZsRequest {
 }
 message GetFilteredPVZsResponse {
   repeated PVZ pvzs = 1;
+}
+
+message DummyLoginRequest {
+  string role = 1 [(validate.rules).string = {in: ["модератор", "сотрудник ПВЗ"]}];
+}
+
+message DummyLoginResponse {
+  string token = 1;
 }

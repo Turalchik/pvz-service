@@ -28,6 +28,7 @@ const (
 	PVZService_RemoveProduct_FullMethodName   = "/pvz_service.PVZService/RemoveProduct"
 	PVZService_CloseReception_FullMethodName  = "/pvz_service.PVZService/CloseReception"
 	PVZService_GetFilteredPVZs_FullMethodName = "/pvz_service.PVZService/GetFilteredPVZs"
+	PVZService_DummyLogin_FullMethodName      = "/pvz_service.PVZService/DummyLogin"
 )
 
 // PVZServiceClient is the client API for PVZService service.
@@ -42,6 +43,7 @@ type PVZServiceClient interface {
 	RemoveProduct(ctx context.Context, in *RemoveProductRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CloseReception(ctx context.Context, in *CloseReceptionRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetFilteredPVZs(ctx context.Context, in *GetFilteredPVZsRequest, opts ...grpc.CallOption) (*GetFilteredPVZsResponse, error)
+	DummyLogin(ctx context.Context, in *DummyLoginRequest, opts ...grpc.CallOption) (*DummyLoginResponse, error)
 }
 
 type pVZServiceClient struct {
@@ -132,6 +134,16 @@ func (c *pVZServiceClient) GetFilteredPVZs(ctx context.Context, in *GetFilteredP
 	return out, nil
 }
 
+func (c *pVZServiceClient) DummyLogin(ctx context.Context, in *DummyLoginRequest, opts ...grpc.CallOption) (*DummyLoginResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DummyLoginResponse)
+	err := c.cc.Invoke(ctx, PVZService_DummyLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PVZServiceServer is the server API for PVZService service.
 // All implementations must embed UnimplementedPVZServiceServer
 // for forward compatibility.
@@ -144,6 +156,7 @@ type PVZServiceServer interface {
 	RemoveProduct(context.Context, *RemoveProductRequest) (*emptypb.Empty, error)
 	CloseReception(context.Context, *CloseReceptionRequest) (*emptypb.Empty, error)
 	GetFilteredPVZs(context.Context, *GetFilteredPVZsRequest) (*GetFilteredPVZsResponse, error)
+	DummyLogin(context.Context, *DummyLoginRequest) (*DummyLoginResponse, error)
 	mustEmbedUnimplementedPVZServiceServer()
 }
 
@@ -177,6 +190,9 @@ func (UnimplementedPVZServiceServer) CloseReception(context.Context, *CloseRecep
 }
 func (UnimplementedPVZServiceServer) GetFilteredPVZs(context.Context, *GetFilteredPVZsRequest) (*GetFilteredPVZsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFilteredPVZs not implemented")
+}
+func (UnimplementedPVZServiceServer) DummyLogin(context.Context, *DummyLoginRequest) (*DummyLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DummyLogin not implemented")
 }
 func (UnimplementedPVZServiceServer) mustEmbedUnimplementedPVZServiceServer() {}
 func (UnimplementedPVZServiceServer) testEmbeddedByValue()                    {}
@@ -343,6 +359,24 @@ func _PVZService_GetFilteredPVZs_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PVZService_DummyLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DummyLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PVZServiceServer).DummyLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PVZService_DummyLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PVZServiceServer).DummyLogin(ctx, req.(*DummyLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PVZService_ServiceDesc is the grpc.ServiceDesc for PVZService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -381,6 +415,10 @@ var PVZService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFilteredPVZs",
 			Handler:    _PVZService_GetFilteredPVZs_Handler,
+		},
+		{
+			MethodName: "DummyLogin",
+			Handler:    _PVZService_DummyLogin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -951,6 +951,94 @@ func (x *GetFilteredPVZsResponse) GetPvzs() []*PVZ {
 	return nil
 }
 
+type DummyLoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Role          string                 `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DummyLoginRequest) Reset() {
+	*x = DummyLoginRequest{}
+	mi := &file_pvz_service_pvz_service_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DummyLoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DummyLoginRequest) ProtoMessage() {}
+
+func (x *DummyLoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pvz_service_pvz_service_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DummyLoginRequest.ProtoReflect.Descriptor instead.
+func (*DummyLoginRequest) Descriptor() ([]byte, []int) {
+	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DummyLoginRequest) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+type DummyLoginResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DummyLoginResponse) Reset() {
+	*x = DummyLoginResponse{}
+	mi := &file_pvz_service_pvz_service_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DummyLoginResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DummyLoginResponse) ProtoMessage() {}
+
+func (x *DummyLoginResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pvz_service_pvz_service_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DummyLoginResponse.ProtoReflect.Descriptor instead.
+func (*DummyLoginResponse) Descriptor() ([]byte, []int) {
+	return file_pvz_service_pvz_service_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *DummyLoginResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
 var File_pvz_service_pvz_service_proto protoreflect.FileDescriptor
 
 const file_pvz_service_pvz_service_proto_rawDesc = "" +
@@ -1014,7 +1102,11 @@ const file_pvz_service_pvz_service_proto_rawDesc = "" +
 	"\x05limit\x18\x04 \x01(\x04R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x05 \x01(\x04R\x06offset\"?\n" +
 	"\x17GetFilteredPVZsResponse\x12$\n" +
-	"\x04pvzs\x18\x01 \x03(\v2\x10.pvz_service.PVZR\x04pvzs2\xf9\x04\n" +
+	"\x04pvzs\x18\x01 \x03(\v2\x10.pvz_service.PVZR\x04pvzs\"]\n" +
+	"\x11DummyLoginRequest\x12H\n" +
+	"\x04role\x18\x01 \x01(\tB4\xfaB1r/R\x12модераторR\x19сотрудник ПВЗR\x04role\"*\n" +
+	"\x12DummyLoginResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token2\xc8\x05\n" +
 	"\n" +
 	"PVZService\x12@\n" +
 	"\bRegister\x12\x1c.pvz_service.RegisterRequest\x1a\x16.google.protobuf.Empty\x12>\n" +
@@ -1025,7 +1117,9 @@ const file_pvz_service_pvz_service_proto_rawDesc = "" +
 	"AddProduct\x12\x1e.pvz_service.AddProductRequest\x1a\x1f.pvz_service.AddProductResponse\x12J\n" +
 	"\rRemoveProduct\x12!.pvz_service.RemoveProductRequest\x1a\x16.google.protobuf.Empty\x12L\n" +
 	"\x0eCloseReception\x12\".pvz_service.CloseReceptionRequest\x1a\x16.google.protobuf.Empty\x12\\\n" +
-	"\x0fGetFilteredPVZs\x12#.pvz_service.GetFilteredPVZsRequest\x1a$.pvz_service.GetFilteredPVZsResponseB>Z<github.com/Turalchik/pvz-service/pkg/pvz_service;pvz_serviceb\x06proto3"
+	"\x0fGetFilteredPVZs\x12#.pvz_service.GetFilteredPVZsRequest\x1a$.pvz_service.GetFilteredPVZsResponse\x12M\n" +
+	"\n" +
+	"DummyLogin\x12\x1e.pvz_service.DummyLoginRequest\x1a\x1f.pvz_service.DummyLoginResponseB>Z<github.com/Turalchik/pvz-service/pkg/pvz_service;pvz_serviceb\x06proto3"
 
 var (
 	file_pvz_service_pvz_service_proto_rawDescOnce sync.Once
@@ -1040,7 +1134,7 @@ func file_pvz_service_pvz_service_proto_rawDescGZIP() []byte {
 }
 
 var file_pvz_service_pvz_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_pvz_service_pvz_service_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_pvz_service_pvz_service_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_pvz_service_pvz_service_proto_goTypes = []any{
 	(Reception_ReceptionStatus)(0),  // 0: pvz_service.Reception.ReceptionStatus
 	(*PVZ)(nil),                     // 1: pvz_service.PVZ
@@ -1059,18 +1153,20 @@ var file_pvz_service_pvz_service_proto_goTypes = []any{
 	(*CloseReceptionRequest)(nil),   // 14: pvz_service.CloseReceptionRequest
 	(*GetFilteredPVZsRequest)(nil),  // 15: pvz_service.GetFilteredPVZsRequest
 	(*GetFilteredPVZsResponse)(nil), // 16: pvz_service.GetFilteredPVZsResponse
-	(*timestamppb.Timestamp)(nil),   // 17: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),           // 18: google.protobuf.Empty
+	(*DummyLoginRequest)(nil),       // 17: pvz_service.DummyLoginRequest
+	(*DummyLoginResponse)(nil),      // 18: pvz_service.DummyLoginResponse
+	(*timestamppb.Timestamp)(nil),   // 19: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),           // 20: google.protobuf.Empty
 }
 var file_pvz_service_pvz_service_proto_depIdxs = []int32{
-	17, // 0: pvz_service.PVZ.registration_date:type_name -> google.protobuf.Timestamp
-	17, // 1: pvz_service.Reception.openingTime:type_name -> google.protobuf.Timestamp
-	17, // 2: pvz_service.Reception.closingTime:type_name -> google.protobuf.Timestamp
+	19, // 0: pvz_service.PVZ.registration_date:type_name -> google.protobuf.Timestamp
+	19, // 1: pvz_service.Reception.openingTime:type_name -> google.protobuf.Timestamp
+	19, // 2: pvz_service.Reception.closingTime:type_name -> google.protobuf.Timestamp
 	3,  // 3: pvz_service.Reception.products:type_name -> pvz_service.Product
 	0,  // 4: pvz_service.Reception.status:type_name -> pvz_service.Reception.ReceptionStatus
-	17, // 5: pvz_service.Product.receptionTime:type_name -> google.protobuf.Timestamp
-	17, // 6: pvz_service.GetFilteredPVZsRequest.start:type_name -> google.protobuf.Timestamp
-	17, // 7: pvz_service.GetFilteredPVZsRequest.finish:type_name -> google.protobuf.Timestamp
+	19, // 5: pvz_service.Product.receptionTime:type_name -> google.protobuf.Timestamp
+	19, // 6: pvz_service.GetFilteredPVZsRequest.start:type_name -> google.protobuf.Timestamp
+	19, // 7: pvz_service.GetFilteredPVZsRequest.finish:type_name -> google.protobuf.Timestamp
 	1,  // 8: pvz_service.GetFilteredPVZsResponse.pvzs:type_name -> pvz_service.PVZ
 	4,  // 9: pvz_service.PVZService.Register:input_type -> pvz_service.RegisterRequest
 	5,  // 10: pvz_service.PVZService.Login:input_type -> pvz_service.LoginRequest
@@ -1080,16 +1176,18 @@ var file_pvz_service_pvz_service_proto_depIdxs = []int32{
 	13, // 14: pvz_service.PVZService.RemoveProduct:input_type -> pvz_service.RemoveProductRequest
 	14, // 15: pvz_service.PVZService.CloseReception:input_type -> pvz_service.CloseReceptionRequest
 	15, // 16: pvz_service.PVZService.GetFilteredPVZs:input_type -> pvz_service.GetFilteredPVZsRequest
-	18, // 17: pvz_service.PVZService.Register:output_type -> google.protobuf.Empty
-	6,  // 18: pvz_service.PVZService.Login:output_type -> pvz_service.LoginResponse
-	8,  // 19: pvz_service.PVZService.CreatePVZ:output_type -> pvz_service.CreatePVZResponse
-	10, // 20: pvz_service.PVZService.OpenReception:output_type -> pvz_service.OpenReceptionResponse
-	12, // 21: pvz_service.PVZService.AddProduct:output_type -> pvz_service.AddProductResponse
-	18, // 22: pvz_service.PVZService.RemoveProduct:output_type -> google.protobuf.Empty
-	18, // 23: pvz_service.PVZService.CloseReception:output_type -> google.protobuf.Empty
-	16, // 24: pvz_service.PVZService.GetFilteredPVZs:output_type -> pvz_service.GetFilteredPVZsResponse
-	17, // [17:25] is the sub-list for method output_type
-	9,  // [9:17] is the sub-list for method input_type
+	17, // 17: pvz_service.PVZService.DummyLogin:input_type -> pvz_service.DummyLoginRequest
+	20, // 18: pvz_service.PVZService.Register:output_type -> google.protobuf.Empty
+	6,  // 19: pvz_service.PVZService.Login:output_type -> pvz_service.LoginResponse
+	8,  // 20: pvz_service.PVZService.CreatePVZ:output_type -> pvz_service.CreatePVZResponse
+	10, // 21: pvz_service.PVZService.OpenReception:output_type -> pvz_service.OpenReceptionResponse
+	12, // 22: pvz_service.PVZService.AddProduct:output_type -> pvz_service.AddProductResponse
+	20, // 23: pvz_service.PVZService.RemoveProduct:output_type -> google.protobuf.Empty
+	20, // 24: pvz_service.PVZService.CloseReception:output_type -> google.protobuf.Empty
+	16, // 25: pvz_service.PVZService.GetFilteredPVZs:output_type -> pvz_service.GetFilteredPVZsResponse
+	18, // 26: pvz_service.PVZService.DummyLogin:output_type -> pvz_service.DummyLoginResponse
+	18, // [18:27] is the sub-list for method output_type
+	9,  // [9:18] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
 	9,  // [9:9] is the sub-list for extension extendee
 	0,  // [0:9] is the sub-list for field type_name
@@ -1106,7 +1204,7 @@ func file_pvz_service_pvz_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pvz_service_pvz_service_proto_rawDesc), len(file_pvz_service_pvz_service_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   16,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
