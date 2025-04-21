@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/Turalchik/pvz-service/internal/database"
 	"github.com/joho/godotenv"
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 	"os"
@@ -42,6 +43,8 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 	desc.RegisterPVZServiceServer(grpcServer, svc)
+
+	reflection.Register(grpcServer)
 
 	log.Println("gRPC server listening on :8080")
 	if err := grpcServer.Serve(lis); err != nil {

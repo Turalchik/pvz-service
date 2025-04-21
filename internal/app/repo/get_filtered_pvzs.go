@@ -2,6 +2,8 @@ package repo
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/Turalchik/pvz-service/internal/entities/pvz"
 	"google.golang.org/grpc/codes"
@@ -31,7 +33,7 @@ func (repo *Repo) GetFilteredPVZs(ctx context.Context, startDate time.Time, endD
 
 	var pvzs []*pvz.PVZ
 	err = repo.db.SelectContext(ctx, &pvzs, query, args...)
-	if err != nil {
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
 		return nil, status.Error(codes.Internal, "failed to fetch PVZ list")
 	}
 
